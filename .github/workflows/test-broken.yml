@@ -1,0 +1,9 @@
+name: Test curl (broken)
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: apt install -y curl
+      - run: ./test.sh

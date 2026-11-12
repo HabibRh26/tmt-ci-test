@@ -1,0 +1,10 @@
+name: Test curl (fixed)
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get install -y curl
+      - run: ./test.sh
