@@ -18,6 +18,6 @@ jobs:
           if command -v apt-get > /dev/null; then
             apt-get update && apt-get install -y curl
           elif command -v dnf > /dev/null; then
-            dnf install -y curl
+            dnf install -y --allowerasing curl
           fi
       - run: ./test.sh
