@@ -1,0 +1,23 @@
+name: Test curl (matrix)
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        distro:
+          - fedora:latest
+          - quay.io/centos/centos:stream9
+          - ubuntu:latest
+    container:
+      image: ${{ matrix.distro }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          if command -v apt-get > /dev/null; then
+            apt-get update && apt-get install -y curl
+          elif command -v dnf > /dev/null; then
+            dnf install -y curl
+          fi
+      - run: ./test.sh
