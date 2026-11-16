@@ -1,23 +1,26 @@
-name: Test curl (matrix)
+name: Test tree (matrix)
 on: push
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    container: ${{ matrix.container }}
     strategy:
+      fail-fast: false
       matrix:
-        distro:
+        container:
+          - ubuntu:latest
           - fedora:latest
           - quay.io/centos/centos:stream9
-          - ubuntu:latest
-    container:
-      image: ${{ matrix.distro }}
     steps:
       - uses: actions/checkout@v4
-      - run: |
-          if command -v apt-get > /dev/null; then
-            apt-get update && apt-get install -y curl
-          elif command -v dnf > /dev/null; then
-            dnf install -y --allowerasing curl
-          fi
+      - name: Install dependencies (Ubuntu)
+        run: apt-get update && apt-get install -y tree
+        if: matrix.container == 'ubuntu:latest'
+      - name: Install dependencies (Fedora)
+        run: dnf install -y tree
+        if: matrix.container == 'fedora:latest'
+      - name: Install dependencies (CentOS Stream)
+        run: dnf install -y tree
+        if: matrix.container == 'quay.io/centos/centos:stream9'
       - run: ./test.sh

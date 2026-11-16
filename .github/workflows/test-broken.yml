@@ -1,9 +1,9 @@
-name: Test curl (broken)
+name: Test tree (broken)
 on: push
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: apt install -y curl
+      - run: apt install -y tree
       - run: ./test.sh
